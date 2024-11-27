@@ -25,7 +25,7 @@
         }
         .menu {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -37,41 +37,315 @@
             text-align: center;
             cursor: pointer;
             transition: background-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
         }
         .menu-item:hover {
             background-color: #4096ff;
         }
-        .content {
+        .icon {
+            font-size: 24px;
+        }
+        .category {
+            margin: 20px 0;
+        }
+        .category-title {
+            margin-bottom: 15px;
+            color: #1677ff;
+            font-weight: bold;
+        }
+        /* 登录表单样式 */
+        .login-form {
+            max-width: 400px;
+            margin: 100px auto;
             padding: 20px;
-            background-color: #fafafa;
+            background-color: white;
             border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #1677ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .login-btn:hover {
+            background-color: #4096ff;
+        }
+        /* 隐藏的内容 */
+        .hidden {
+            display: none;
+        }
+        /* 面包屑导航 */
+        .breadcrumb {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .logout-btn {
+            float: right;
+            padding: 5px 10px;
+            background-color: #ff4d4f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background-color: #ff7875;
+        }
+        /* 学生管理页面样式 */
+        .student-management {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .student-table th, .student-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .student-table th {
+            background-color: #f5f5f5;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- 登录页面 -->
+    <div id="loginPage" class="login-form">
         <div class="header">
             <h1>校园信息管理系统</h1>
-            <p>基于微服务架构的演示版本</p>
+            <p>请登录</p>
         </div>
-        <div class="menu">
-            <div class="menu-item">学生管理</div>
-            <div class="menu-item">教师管理</div>
-            <div class="menu-item">课程管理</div>
-            <div class="menu-item">成绩管理</div>
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" id="username" placeholder="请输入用户名">
         </div>
-        <div class="content">
-            <h2>系统说明</h2>
-            <p>这是一个基于微服务架构的校园信息管理系统演示版本。系统采用现代化的技术栈，包括：</p>
-            <ul>
-                <li>前端：HTML5, CSS3, JavaScript</li>
-                <li>后端：Spring Boot, Spring Cloud</li>
-                <li>数据库：MySQL</li>
-                <li>服务发现：Eureka</li>
-                <li>负载均衡：Ribbon</li>
-                <li>服务网关：Gateway</li>
-            </ul>
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input type="password" id="password" placeholder="请输入密码">
+        </div>
+        <button class="login-btn" onclick="login()">登录</button>
+    </div>
+
+    <!-- 主界面 -->
+    <div id="mainPage" class="hidden">
+        <div class="container">
+            <div class="breadcrumb">
+                当前位置：<span id="currentLocation">首页</span>
+                <button class="logout-btn" onclick="logout()">退出登录</button>
+            </div>
+            <div class="header">
+                <h1>校园信息管理系统</h1>
+                <p>基于微服务架构的演示版本</p>
+            </div>
+            
+            <div id="menuContent">
+                <div class="category">
+                    <h2 class="category-title">教务管理</h2>
+                    <div class="menu">
+                        <div class="menu-item" onclick="showStudentManagement()">
+                            <span class="icon">👨‍🎓</span>
+                            学生管理
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">👨‍🏫</span>
+                            教师管理
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">📚</span>
+                            课程管理
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">📊</span>
+                            成绩管理
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">📅</span>
+                            课表管理
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">🎓</span>
+                            考试安排
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h2 class="category-title">行政管理</h2>
+                    <div class="menu">
+                        <div class="menu-item">
+                            <span class="icon">🏢</span>
+                            部门管理
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">📝</span>
+                            考勤管理
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">💰</span>
+                            财务管理
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">🏫</span>
+                            教室管理
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h2 class="category-title">学生服务</h2>
+                    <div class="menu">
+                        <div class="menu-item">
+                            <span class="icon">🏠</span>
+                            宿舍管理
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">🍽️</span>
+                            食堂管理
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">📖</span>
+                            图书馆
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">🎮</span>
+                            社团活动
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h2 class="category-title">系统设置</h2>
+                    <div class="menu">
+                        <div class="menu-item">
+                            <span class="icon">👤</span>
+                            用户管理
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">🔒</span>
+                            权限设置
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">⚙️</span>
+                            系统配置
+                        </div>
+                        <div class="menu-item">
+                            <span class="icon">📊</span>
+                            数据备份
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 学生管理页面 -->
+            <div id="studentManagement" class="student-management hidden">
+                <h2>学生管理</h2>
+                <table class="student-table">
+                    <thead>
+                        <tr>
+                            <th>学号</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>班级</th>
+                            <th>专业</th>
+                            <th>联系电话</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2021001</td>
+                            <td>张三</td>
+                            <td>男</td>
+                            <td>计算机2101</td>
+                            <td>计算机科学与技术</td>
+                            <td>13800138000</td>
+                        </tr>
+                        <tr>
+                            <td>2021002</td>
+                            <td>李四</td>
+                            <td>女</td>
+                            <td>计算机2101</td>
+                            <td>计算机科学与技术</td>
+                            <td>13800138001</td>
+                        </tr>
+                        <tr>
+                            <td>2021003</td>
+                            <td>王五</td>
+                            <td>男</td>
+                            <td>计算机2102</td>
+                            <td>计算机科学与技术</td>
+                            <td>13800138002</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
+    <script>
+        // 登录功能
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // 简单的验证
+            if (username && password) {
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('mainPage').classList.remove('hidden');
+            } else {
+                alert('请输入用户名和密码！');
+            }
+        }
+
+        // 退出登录
+        function logout() {
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('mainPage').classList.add('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // 显示学生管理页面
+        function showStudentManagement() {
+            document.getElementById('menuContent').classList.add('hidden');
+            document.getElementById('studentManagement').classList.remove('hidden');
+            document.getElementById('currentLocation').textContent = '首页 / 教务管理 / 学生管理';
+        }
+
+        // 返回主菜单
+        function backToMenu() {
+            document.getElementById('menuContent').classList.remove('hidden');
+            document.getElementById('studentManagement').classList.add('hidden');
+            document.getElementById('currentLocation').textContent = '首页';
+        }
+    </script>
 </body>
 </html>
